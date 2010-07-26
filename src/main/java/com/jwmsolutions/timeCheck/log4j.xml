@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration>
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d [%t] %-5p %c - %m%n" />
+		</layout>
+	</appender>
+	<appender name="FILE" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="/timeCheck/timeCheck.log" />
+		<layout class="org.apache.log4j.PatternLayout" >
+			<param name="ConversionPattern" value="%d [%t] %-5p %c - %m%n"/>
+		</layout>
+		<filter class="com.jwmsolutions.timeCheck.util.LogFilter" />
+	</appender>
+	<logger name="org.apache.commons.digester.Digester" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="Console"/>
+    </logger>
+	<root>
+		<level value="DEBUG" />
+		<appender-ref ref="FILE" />
+		<appender-ref ref="CONSOLE"/>
+	</root>
+</log4j:configuration>
