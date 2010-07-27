@@ -29,9 +29,9 @@ public class ReminderScheduler {
 			JobDetail jobDetail = new JobDetail("Reminder Job", "DEFAULT", ReminderJob.class);
 			SimpleTrigger simpleTrigger = new SimpleTrigger("QRTZ_FAILED_JOB_ORIG_TRIGGER_NAME", "QRTZ_FAILED_JOB_ORIG_TRIGGER_GROUP");
 
-//			simpleTrigger.setStartTime(getStartTime());
-			simpleTrigger.setStartTime(new Date());
-			simpleTrigger.setRepeatInterval(Long.valueOf(CoreObject.getGlobalProperties().getProperty(Constants.QUARTZ_REPEAT_INTERVAL)));
+			simpleTrigger.setStartTime(getStartTime());
+//			simpleTrigger.setStartTime(new Date());
+			simpleTrigger.setRepeatInterval(CoreObject.getConfig().getLong(Constants.QUARTZ_REPEAT_INTERVAL));
 			simpleTrigger.setRepeatCount(SimpleTrigger.REPEAT_INDEFINITELY);
 
 			scheduler.scheduleJob(jobDetail, simpleTrigger);
@@ -45,7 +45,7 @@ public class ReminderScheduler {
 
 	private Date getStartTime() {
 		Calendar c = Calendar.getInstance();
-		c.add(Calendar.HOUR_OF_DAY, Integer.valueOf((String)CoreObject.getGlobalProperties().get(Constants.QUARTZ_START_TIME)));
+		c.add(Calendar.HOUR_OF_DAY, CoreObject.getConfig().getInt(Constants.QUARTZ_START_TIME));
 		return c.getTime();
 	}
 }

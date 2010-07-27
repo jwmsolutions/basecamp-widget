@@ -20,7 +20,10 @@ import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -108,7 +111,7 @@ layout.setHorizontalGroup(layout.createSequentialGroup()
 setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
 		pack();
-		this.setSize(327, 212);
+		this.setSize(327, 271);
 	}// </editor-fold>
 	//GEN-END:initComponents
 
@@ -122,7 +125,7 @@ setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		String todoDescription = (String)jcbTodos.getSelectedItem();
 		BasecampTodoItem todoItem = CoreObject.getTodoMap().get(todoDescription);
 		Integer todoItemId = todoItem.getId();
-		Integer personId = todoItem.getResponsiblePartyId();
+		Integer personId = CoreObject.getCurrentProfile().getBasecampAccountId();
 		String description = jtfDescription.getText();
 		BasecampTimeEntry entry = new BasecampTimeEntry(id, projectId, personId, date, hours, description, todoItemId);
 		String statusCode = BasecampBusiness.createTimeEntry(todoItemId.toString(), entry);
@@ -177,14 +180,19 @@ jpnlTimeLayout.setHorizontalGroup(jpnlTimeLayout.createSequentialGroup()
 				.addContainerGap()
 				.add(jpnlTimeLayout.createParallelGroup()
 				    .add(GroupLayout.LEADING, getJPanel3(), 0, 299, Short.MAX_VALUE)
-				    .add(GroupLayout.LEADING, getJPanel2(), 0, 299, Short.MAX_VALUE))
+				    .add(GroupLayout.LEADING, getJPanel2(), 0, 299, Short.MAX_VALUE)
+				    .add(GroupLayout.LEADING, getJPanel4(), 0, 299, Short.MAX_VALUE)
+				    .add(GroupLayout.LEADING, getJPanel5(), 0, 299, Short.MAX_VALUE))
 				.addContainerGap());
 jpnlTimeLayout.setVerticalGroup(jpnlTimeLayout.createSequentialGroup()
 				.add(6)
 				.add(getJPanel3(), GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
-				.addPreferredGap(LayoutStyle.UNRELATED)
-				.add(getJPanel2(), 0, 107, Short.MAX_VALUE)
-				.addContainerGap());
+				.addPreferredGap(LayoutStyle.RELATED)
+				.add(getJPanel5(), GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
+				.addPreferredGap(LayoutStyle.RELATED)
+				.add(getJPanel4(), 0, 42, Short.MAX_VALUE)
+				.addPreferredGap(LayoutStyle.RELATED)
+				.add(getJPanel2(), 0, 72, Short.MAX_VALUE));
 		}
 		return jpnlTime;
 	}
@@ -227,29 +235,18 @@ jpnlTimeLayout.setVerticalGroup(jpnlTimeLayout.createSequentialGroup()
 	private JPanel getJPanel2() {
 		if(jPanel2 == null) {
 			jPanel2 = new JPanel();
-			TableLayout jPanel2Layout = new TableLayout(new double[][] {{TableLayout.FILL, TableLayout.FILL, TableLayout.FILL, TableLayout.FILL}, {TableLayout.FILL, TableLayout.FILL, TableLayout.FILL, TableLayout.FILL}});
+			TableLayout jPanel2Layout = new TableLayout(new double[][] {{TableLayout.FILL, TableLayout.FILL, TableLayout.FILL, TableLayout.FILL}, {TableLayout.FILL, TableLayout.FILL, TableLayout.FILL}});
 			jPanel2.setLayout(jPanel2Layout);
-			jPanel2.add(getJtfDescription(), "0, 2, 2, 3");
+			jPanel2.add(getJtfDescription(), "0, 1, 2, 2");
 			{
 				jbtnReport = new javax.swing.JButton();
-				jPanel2.add(jbtnReport, "3, 2");
+				jPanel2.add(jbtnReport, "3, 1");
 				jbtnReport.setText("Report");
 				jbtnReport.addActionListener(new java.awt.event.ActionListener() {
 					public void actionPerformed(java.awt.event.ActionEvent evt) {
 						jbtnReportActionPerformed(evt);
 					}
 				});
-			}
-			{
-				jcbTodos = new javax.swing.JComboBox();
-				jPanel2.add(jcbTodos, "0, 0, 3, 0");
-				jcbTodos.setBorder(BorderFactory.createEtchedBorder(BevelBorder.LOWERED));
-				jcbTodos.addItemListener(new ItemListener() {
-					public void itemStateChanged(ItemEvent evt) {
-						jcbTodosItemStateChanged(evt);
-					}
-				});
-				jPanel2.add(getJlblDescription(), "0,1,f,b");
 			}
 			jPanel2Layout.setHGap(5);
 			jPanel2Layout.setVGap(5);
@@ -266,6 +263,11 @@ jpnlTimeLayout.setVerticalGroup(jpnlTimeLayout.createSequentialGroup()
 	private javax.swing.JLabel jlblCurrentTime;
 	private javax.swing.JLabel jLabel2;
 	private javax.swing.JLabel jLabel3;
+	private JComboBox jcbLists;
+	private JLabel lblLists;
+	private JPanel jPanel5;
+	private JPanel jPanel4;
+	private JLabel lblTodos;
 	private JLabel jlblDescription;
 	private JDateChooser jDateChooser_IL;
 	private JPanel jPanel3;
@@ -379,6 +381,7 @@ jpnlTimeLayout.setVerticalGroup(jpnlTimeLayout.createSequentialGroup()
 		if(jlblDescription == null) {
 			jlblDescription = new JLabel();
 			jlblDescription.setText("Description");
+			jlblDescription.setLabelFor(getJtfDescription());
 		}
 		return jlblDescription;
 	}
@@ -387,5 +390,71 @@ jpnlTimeLayout.setVerticalGroup(jpnlTimeLayout.createSequentialGroup()
 		String todoName = (String)jcbTodos.getSelectedItem();
 		boolean isCompletedTodo = StringUtils.containsIgnoreCase(todoName, CoreObject.getConfig().getString(Constants.CONFIG_COMPLETED_ITEM_TAG));
 		jchkCompleted.setSelected(isCompletedTodo);
+	}
+
+	private JLabel getLblTodos() {
+		if(lblTodos == null) {
+			lblTodos = new JLabel();
+			lblTodos.setText("ToDo items");
+			lblTodos.setLabelFor(jcbTodos);
+		}
+		return lblTodos;
+	}
+
+	private JPanel getJPanel4() {
+		if(jPanel4 == null) {
+			jPanel4 = new JPanel();
+			TableLayout jPanel4Layout = new TableLayout(new double[][] {{TableLayout.FILL, TableLayout.FILL, TableLayout.FILL, TableLayout.FILL}, {TableLayout.FILL, TableLayout.FILL}});
+			jPanel4Layout.setHGap(5);
+			jPanel4Layout.setVGap(5);
+			jPanel4.setLayout(jPanel4Layout);
+			jPanel4.add(getLblTodos(), "0,0,l,b");
+			{
+				jcbTodos = new javax.swing.JComboBox();
+				jPanel4.add(jcbTodos, "0, 1, 3, 1");
+				jcbTodos.setBorder(BorderFactory.createEtchedBorder(BevelBorder.LOWERED));
+				jcbTodos.addItemListener(new ItemListener() {
+					public void itemStateChanged(ItemEvent evt) {
+						jcbTodosItemStateChanged(evt);
+					}
+				});
+				jPanel2.add(getJlblDescription(), "0,0,l,b");
+			}
+		}
+		return jPanel4;
+	}
+
+	private JPanel getJPanel5() {
+		if(jPanel5 == null) {
+			jPanel5 = new JPanel();
+			TableLayout jPanel5Layout = new TableLayout(new double[][] {{TableLayout.FILL, TableLayout.FILL, TableLayout.FILL, TableLayout.FILL}, {TableLayout.FILL, TableLayout.FILL}});
+			jPanel5Layout.setHGap(5);
+			jPanel5Layout.setVGap(5);
+			jPanel5.setLayout(jPanel5Layout);
+			jPanel5.add(getLblLists(), "0,0,l,b");
+			jPanel5.add(getJcbLists(), "0, 1, 3, 1");
+		}
+		return jPanel5;
+	}
+
+	private JLabel getLblLists() {
+		if(lblLists == null) {
+			lblLists = new JLabel();
+			lblLists.setText("ToDo List");
+		}
+		return lblLists;
+	}
+
+	private JComboBox getJcbLists() {
+		if(jcbLists == null) {
+			ComboBoxModel jcbListModel =
+				new DefaultComboBoxModel(
+						new String[] { "Item One", "Item Two" });
+			jcbListModel.setSelectedItem("");
+			jcbLists = new JComboBox();
+			jcbLists.setModel(jcbListModel);
+			jcbLists.setBorder(BorderFactory.createEtchedBorder(BevelBorder.LOWERED));
+		}
+		return jcbLists;
 	}
 }

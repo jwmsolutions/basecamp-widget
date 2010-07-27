@@ -51,6 +51,7 @@ import com.jwmsolutions.timeCheck.CoreObject;
 import com.jwmsolutions.timeCheck.model.BaseObject;
 import com.jwmsolutions.timeCheck.model.BasecampAccount;
 import com.jwmsolutions.timeCheck.model.BasecampCompany;
+import com.jwmsolutions.timeCheck.model.BasecampPerson;
 import com.jwmsolutions.timeCheck.model.BasecampProject;
 import com.jwmsolutions.timeCheck.model.BasecampProjects;
 import com.jwmsolutions.timeCheck.model.BasecampTimeEntry;
@@ -327,6 +328,35 @@ public class BasecampBusiness {
 		return account;
 	}
 
+	public static BasecampPerson getCurrentPerson() {
+		String response = execute(
+				getCurrentProfile(),
+				getProperty(getGlobalProperties(), BASECAMP_API_GET_CURRENT_PERSON),
+				null,
+				METHOD_GET
+		);
+		CoreObject.newLog(BasecampBusiness.class).debug(response);
+
+		Digester digester = new Digester();
+		digester.setValidating( false );
+
+		String pattern = "person";
+		digester.addObjectCreate(pattern, BasecampPerson.class);
+		setPersonRules(digester, pattern);
+
+		BasecampPerson person = null;
+		try {
+			person = (BasecampPerson)digester.parse(new StringReader(response));
+		} catch (IOException e) {
+			CoreObject.getLog().error(e.getMessage());
+			e.printStackTrace();
+		} catch (SAXException e) {
+			CoreObject.getLog().error(e.getMessage());
+			e.printStackTrace();
+		}
+		return person;
+	}
+
 	private static void setProjectsRules(Digester digester, String pattern) {
 		for(Field field : BasecampProjects.class.getDeclaredFields()) {
 			String fieldName = field.getName();
@@ -427,6 +457,15 @@ public class BasecampBusiness {
 
 	private static void setAccountRules(Digester digester, String pattern) {
 		for(Field field : BasecampAccount.class.getDeclaredFields()) {
+			String fieldName = field.getName();
+			String tagName = convertStringToTagName(fieldName);
+			String newPattern = new String(pattern + "/" + tagName);
+			digester.addBeanPropertySetter(newPattern, fieldName);
+		}
+	}
+
+	private static void setPersonRules(Digester digester, String pattern) {
+		for(Field field : BasecampPerson.class.getDeclaredFields()) {
 			String fieldName = field.getName();
 			String tagName = convertStringToTagName(fieldName);
 			String newPattern = new String(pattern + "/" + tagName);

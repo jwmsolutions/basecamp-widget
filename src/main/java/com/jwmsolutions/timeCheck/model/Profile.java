@@ -3,6 +3,7 @@ package com.jwmsolutions.timeCheck.model;
 import com.jwmsolutions.timeCheck.CoreObject;
 
 public class Profile {
+	private Integer basecampAccountId;
 	private String username;
 	private String password;
 	private String basecampToken;
@@ -11,6 +12,12 @@ public class Profile {
 	private boolean rememberPassword;
 	private boolean autoLogin;
 
+	public Integer getBasecampAccountId() {
+		return basecampAccountId;
+	}
+	public void setBasecampAccountId(Integer basecampAccountId) {
+		this.basecampAccountId = basecampAccountId;
+	}
 	public String getUsername() {
 		return username;
 	}

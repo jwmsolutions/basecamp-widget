@@ -9,6 +9,7 @@ package com.jwmsolutions.timeCheck.gui;
 import com.jwmsolutions.timeCheck.CoreObject;
 import com.jwmsolutions.timeCheck.business.BasecampBusiness;
 import com.jwmsolutions.timeCheck.business.ConfigurationBusiness;
+import com.jwmsolutions.timeCheck.model.BasecampPerson;
 import com.jwmsolutions.timeCheck.model.Profile;
 
 import java.awt.Dimension;
@@ -290,6 +291,7 @@ public class ConfigurationForm extends javax.swing.JDialog {
 
 		ConfigurationBusiness.saveConfiguration(username, password, basecampUrl, storeAccount, storePassword, isAutoLogin);
 		//		ConfigurationBusiness.loadStoredProfile();
+
 		if(CoreObject.testConnection()) {
 			CoreObject.loadProjectMap();
 			this.setVisible(false);
@@ -299,6 +301,8 @@ public class ConfigurationForm extends javax.swing.JDialog {
 					} else {
 						CoreObject.getTodoForm().setVisible(true);
 					}
+			BasecampPerson person = BasecampBusiness.getCurrentPerson();
+			CoreObject.getCurrentProfile().setBasecampAccountId(person.getId());
 		} else {
 			String message = "Connection failed. \nYour username and password are correct?";
 			String title = "Connection failed";
