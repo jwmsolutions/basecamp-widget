@@ -62,10 +62,7 @@ public class ProjectSelectorForm extends javax.swing.JDialog {
 	private JPanel jPanel2;
 	private JButton jbtnCancel;
 	private JButton jbtnOk;
-	private JList jlLists;
 	private JComboBox jcbProjects;
-	private DefaultListModel listModel;
-	private Map<String, Integer> todoListMap;
 
 	/**
 	 * Auto-generated main method to display this JFrame
@@ -123,7 +120,7 @@ public class ProjectSelectorForm extends javax.swing.JDialog {
 				}
 				{
 					jPanel1 = new JPanel();
-					TableLayout jPanel1Layout = new TableLayout(new double[][] {{TableLayout.FILL, TableLayout.FILL, TableLayout.FILL, TableLayout.FILL}, {TableLayout.FILL, TableLayout.FILL, TableLayout.FILL, TableLayout.FILL, TableLayout.FILL, TableLayout.FILL, TableLayout.FILL}});
+					TableLayout jPanel1Layout = new TableLayout(new double[][] {{TableLayout.FILL, TableLayout.FILL, TableLayout.FILL, TableLayout.FILL}, {TableLayout.FILL}});
 					jPanel1Layout.setHGap(5);
 					jPanel1Layout.setVGap(5);
 					jPanel1.setLayout(jPanel1Layout);
@@ -140,84 +137,47 @@ public class ProjectSelectorForm extends javax.swing.JDialog {
 							}
 						});
 					}
-					{
-						listModel = new DefaultListModel();
-						jlLists = new JList(listModel);
-						jPanel1.add(jlLists, "0, 1, 3, 6");
-						jlLists.setBorder(BorderFactory.createEtchedBorder(BevelBorder.LOWERED));
-						jlLists.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-					}
 				}
 				jPanel2Layout.setHorizontalGroup(jPanel2Layout.createSequentialGroup()
-						.addContainerGap()
-						.add(jPanel2Layout.createParallelGroup()
-								.add(GroupLayout.LEADING, jPanel1, 0, 345, Short.MAX_VALUE)
-								.add(GroupLayout.LEADING, jPanel2Layout.createSequentialGroup()
-										.add(0, 209, Short.MAX_VALUE)
-										.add(jbtnOk, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(LayoutStyle.RELATED, 0, GroupLayout.PREFERRED_SIZE)
-										.add(jbtnCancel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)))
-										.addContainerGap());
+					.addContainerGap()
+					.add(jPanel2Layout.createParallelGroup()
+					    .add(GroupLayout.LEADING, jPanel1, 0, 345, Short.MAX_VALUE)
+					    .add(GroupLayout.LEADING, jPanel2Layout.createSequentialGroup()
+					        .add(0, 209, Short.MAX_VALUE)
+					        .add(jbtnOk, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+					        .addPreferredGap(LayoutStyle.RELATED, 0, GroupLayout.PREFERRED_SIZE)
+					        .add(jbtnCancel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap());
 				jPanel2Layout.setVerticalGroup(jPanel2Layout.createSequentialGroup()
-						.add(6)
-						.add(jPanel1, 0, 156, Short.MAX_VALUE)
-						.addPreferredGap(LayoutStyle.RELATED)
-						.add(jPanel2Layout.createParallelGroup(GroupLayout.BASELINE)
-								.add(GroupLayout.BASELINE, jbtnCancel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-								.add(GroupLayout.BASELINE, jbtnOk, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-								.addContainerGap());
+					.add(6)
+					.add(jPanel1, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
+					.add(29)
+					.add(jPanel2Layout.createParallelGroup(GroupLayout.BASELINE)
+					    .add(GroupLayout.BASELINE, jbtnOk, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+					    .add(GroupLayout.BASELINE, jbtnCancel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(125, 125));
 			}
 			thisLayout.setVerticalGroup(thisLayout.createSequentialGroup()
 					.add(jPanel2, 0, 202, Short.MAX_VALUE));
 			thisLayout.setHorizontalGroup(thisLayout.createSequentialGroup()
 					.add(jPanel2, GroupLayout.PREFERRED_SIZE, 370, GroupLayout.PREFERRED_SIZE));
 			pack();
-			this.setSize(373, 229);
+			this.setSize(373, 114);
 		} catch (Exception e) {
 			//add your error handling code here
 			e.printStackTrace();
 		}
 	}
 
-	public DefaultListModel getListModel() {
-		return listModel;
-	}
-
 	public void clearProjectsCombo() {
 		this.jcbProjects.removeAllItems();
-	}
-
-	public void clearTodoListsList() {
-		this.jlLists.setModel(new DefaultListModel());
 	}
 
 	public void addProjectToCombo(String key) {
 		jcbProjects.addItem(key);
 	}
 
-	public void addTodoListToList(String key) {
-		int size = listModel.getSize();
-		listModel.addElement(key);
-	}
-
 	private void jcbProjectsItemStateChanged(ItemEvent evt) {
-		String item = (String)jcbProjects.getSelectedItem();
-		Integer projectId = CoreObject.getProjectMap().get(item);
-
-		if(projectId == null)
-			return;
-		BasecampTodoLists todoLists = BasecampBusiness.getAllListsWithinProject(projectId.toString(), Constants.PROJECTS_FILTER_PENDING);
-		todoListMap = new LinkedMap();
-		listModel.clear();
-		for(BasecampTodoList todoList : todoLists.getTodoLists()) {
-			String key = todoList.getName();
-			Integer value = todoList.getId();
-			todoListMap.put(key, value);
-			int size = listModel.getSize();
-			listModel.addElement(key);
-		}
-		if(listModel.size() > 0)
-			jlLists.setSelectedIndex(0);
 	}
 
 	private void jbtnCancelActionPerformed(ActionEvent evt) {
@@ -225,19 +185,13 @@ public class ProjectSelectorForm extends javax.swing.JDialog {
 	}
 
 	private void jbtnOkActionPerformed(ActionEvent evt) {
-		CoreObject.setTodoListMap(todoListMap);
 		String projectSelected = (String)jcbProjects.getSelectedItem();
-		String todoListSelected = (String)jlLists.getSelectedValue();
 		Integer projectId = CoreObject.getProjectMap().get(projectSelected);
-		Integer todoListId = CoreObject.getTodoListMap().get(todoListSelected);
 		CoreObject.setWorkingProjectId(projectId.toString());
-		CoreObject.setWorkingTodoListId(todoListId.toString());
-		CoreObject.reloadTodoMap();
 		if(CoreObject.getCurrentProfile().isAutoLogin()) {
 			ConfigurationBusiness.saveWorkingProjectId(projectId);
-			ConfigurationBusiness.saveWorkingTodoListId(todoListId);
 		}
-		CoreObject.reloadTodoMap();
+		CoreObject.loadTodoListMap();
 		setVisible(false);
 		CoreObject.getTodoForm().setVisible(true);
 	}

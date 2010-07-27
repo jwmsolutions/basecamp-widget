@@ -163,11 +163,23 @@ public class CoreObject {
 	}
 	public static void loadTodoListMap() {
 		todoListMap.clear();
-		getProjectSelectorForm().clearTodoListsList();
+		getTodoForm().clearTodoListsCombo();
 		BasecampTodoLists bcTodoLists = BasecampBusiness.getAllListsWithinProject(workingProjectId, PROJECTS_FILTER_PENDING);
 		for(BasecampTodoList tdList : bcTodoLists.getTodoLists()) {
 			todoListMap.put(tdList.getName(), tdList.getId());
-			getProjectSelectorForm().addTodoListToList(tdList.getName());
+			getTodoForm().addListToCombo(tdList.getName());
+		}
+		if(getTodoForm().getJcbLists().getItemCount() > 0) {
+			getTodoForm().getJcbLists().setSelectedIndex(0);
+		}
+
+		String todoListSelected = (String)getTodoForm().getJcbLists().getSelectedItem();
+		Integer todoListId = todoListMap.get(todoListSelected);
+		setWorkingTodoListId(todoListId.toString());
+		reloadTodoMap();
+
+		if(getCurrentProfile().isAutoLogin()) {
+			ConfigurationBusiness.saveWorkingTodoListId(todoListId);
 		}
 	}
 
