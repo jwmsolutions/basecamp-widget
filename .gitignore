@@ -1,0 +1,8 @@
+target/
+.myeclipse
+.settings
+.classpath
+.project
+*.swp
+*~
+
