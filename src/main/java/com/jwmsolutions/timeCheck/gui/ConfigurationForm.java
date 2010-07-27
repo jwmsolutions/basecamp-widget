@@ -328,8 +328,9 @@ public class ConfigurationForm extends javax.swing.JDialog {
 					} else {
 						CoreObject.getTodoForm().setVisible(true);
 					}
-			Long intervalInMiliseconds = Long.valueOf(jtxtInterval.getText()) * 60 * 1000;
-			CoreObject.getConfig().setProperty(Constants.QUARTZ_REMINDER_REPEAT_INTERVAL, Math.abs(intervalInMiliseconds.longValue()));
+			Long interval = Long.valueOf(jtxtInterval.getText());
+			long intervalInMiliseconds = Math.abs(interval.longValue()) * 60 * 1000;
+			CoreObject.getConfig().setProperty(Constants.QUARTZ_REMINDER_REPEAT_INTERVAL, intervalInMiliseconds);
 
 			BasecampPerson person = BasecampBusiness.getCurrentPerson();
 			CoreObject.getCurrentProfile().setBasecampAccountId(person.getId());
