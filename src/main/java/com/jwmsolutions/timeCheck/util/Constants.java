@@ -43,8 +43,11 @@ public class Constants {
 	/*
 	 * Constantes que guardan el nombre de una llave en el archivo .properties para quartz
 	 */
-	public final static String QUARTZ_REPEAT_INTERVAL = "quartz.repeat.interval";
-	public final static String QUARTZ_START_TIME = "quartz.start.time";
+	public final static String QUARTZ_REMINDER_REPEAT_INTERVAL = "quartz.reminder.repeat.interval";
+	public final static String QUARTZ_REMINDER_START_TIME = "quartz.reminder.start.time";
+	public final static String QUARTZ_REFRESH_REPEAT_INTERVAL = "quartz.refresh.repeat.interval";
+	public final static String QUARTZ_REFRESH_START_TIME = "quartz.refresh.start.time";
+	public final static Long QUARTZ_MAX_REPEAT_INTERVAL_TIME = 6 * 60 * 60 * 1000L;
 
 	/* CONSTANT PARAMETERS */
 	public final static String PROJECTS_FILTER_ALL = "all";

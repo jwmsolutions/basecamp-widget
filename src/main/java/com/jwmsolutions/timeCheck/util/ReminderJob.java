@@ -23,7 +23,7 @@ public class ReminderJob implements Job {
 	private static final Logger log = Logger.getLogger(ReminderJob.class.getName());
 
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
-		log.log(Level.INFO, "Informacion al usuario - " + new Date());
+		log.log(Level.INFO, "Reminder job execution START - " + new Date());
 
 		StringBuffer message = new StringBuffer("Do you have some uncompleted To-do items: ");
 		int size = message.toString().length();
@@ -31,7 +31,10 @@ public class ReminderJob implements Job {
 		while(it.hasNext()) {
 			Entry<String, BasecampTodoItem> e = it.next();
 			if(!StringUtils.containsIgnoreCase(e.getKey(), CoreObject.getConfig().getString(CONFIG_COMPLETED_ITEM_TAG))) {
-				message.append("\n" + e.getValue().getId() + ": " + e.getKey());
+				BasecampTodoItem item = e.getValue();
+				if(item.getResponsiblePartyId().intValue() == CoreObject.getCurrentProfile().getBasecampAccountId().intValue()) {
+					message.append("\n" + e.getValue().getId() + ": " + e.getKey());
+				}
 			}
 		}
 		if(message.toString().length() > size) {

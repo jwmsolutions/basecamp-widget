@@ -471,8 +471,25 @@ public class TodoForm extends javax.swing.JDialog {
 		if(jbtnRefresh == null) {
 			jbtnRefresh = new JButton();
 			jbtnRefresh.setText("Refresh Lists");
+			jbtnRefresh.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evt) {
+					refreshActionPerformed(evt);
+				}
+			});
 		}
 		return jbtnRefresh;
+	}
+
+	protected void refreshActionPerformed(ActionEvent evt) {
+		refreshCombos();
+	}
+
+	public void refreshCombos() {
+		String currentSelectedList = (String)jcbLists.getSelectedItem();
+		String currentSelectedItem = (String)jcbTodos.getSelectedItem();
+		CoreObject.loadTodoListMap();
+		jcbLists.setSelectedItem(currentSelectedList);
+		jcbTodos.setSelectedItem(currentSelectedItem);
 	}
 
 	private JLabel getJlblTodoList() {

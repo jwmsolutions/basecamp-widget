@@ -31,7 +31,11 @@ public class ReminderScheduler {
 
 			simpleTrigger.setStartTime(getStartTime());
 //			simpleTrigger.setStartTime(new Date());
-			simpleTrigger.setRepeatInterval(CoreObject.getConfig().getLong(Constants.QUARTZ_REPEAT_INTERVAL));
+			Long repeatInterval = CoreObject.getConfig().getLong(Constants.QUARTZ_REMINDER_REPEAT_INTERVAL);
+			if(repeatInterval.longValue() > Constants.QUARTZ_MAX_REPEAT_INTERVAL_TIME) {
+				repeatInterval = Constants.QUARTZ_MAX_REPEAT_INTERVAL_TIME;
+			}
+			simpleTrigger.setRepeatInterval(repeatInterval);
 			simpleTrigger.setRepeatCount(SimpleTrigger.REPEAT_INDEFINITELY);
 
 			scheduler.scheduleJob(jobDetail, simpleTrigger);
@@ -45,7 +49,7 @@ public class ReminderScheduler {
 
 	private Date getStartTime() {
 		Calendar c = Calendar.getInstance();
-		c.add(Calendar.HOUR_OF_DAY, CoreObject.getConfig().getInt(Constants.QUARTZ_START_TIME));
+		c.add(Calendar.HOUR_OF_DAY, CoreObject.getConfig().getInt(Constants.QUARTZ_REMINDER_START_TIME));
 		return c.getTime();
 	}
 }

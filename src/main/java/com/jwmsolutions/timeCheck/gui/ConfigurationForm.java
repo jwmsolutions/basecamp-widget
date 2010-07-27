@@ -6,18 +6,11 @@
 
 package com.jwmsolutions.timeCheck.gui;
 
-import com.jwmsolutions.timeCheck.CoreObject;
-import com.jwmsolutions.timeCheck.business.BasecampBusiness;
-import com.jwmsolutions.timeCheck.business.ConfigurationBusiness;
-import com.jwmsolutions.timeCheck.model.BasecampPerson;
-import com.jwmsolutions.timeCheck.model.Profile;
-import com.jwmsolutions.timeCheck.util.Constants;
-import com.jwmsolutions.timeCheck.util.ReminderScheduler;
-
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -25,10 +18,18 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.border.SoftBevelBorder;
+
 import org.jdesktop.layout.GroupLayout;
 import org.jdesktop.layout.LayoutStyle;
+
+import com.jwmsolutions.timeCheck.CoreObject;
+import com.jwmsolutions.timeCheck.business.BasecampBusiness;
+import com.jwmsolutions.timeCheck.business.ConfigurationBusiness;
+import com.jwmsolutions.timeCheck.model.BasecampPerson;
+import com.jwmsolutions.timeCheck.model.Profile;
+import com.jwmsolutions.timeCheck.util.Constants;
+import com.jwmsolutions.timeCheck.util.RefreshListsScheduler;
+import com.jwmsolutions.timeCheck.util.ReminderScheduler;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo
@@ -328,13 +329,18 @@ public class ConfigurationForm extends javax.swing.JDialog {
 						CoreObject.getTodoForm().setVisible(true);
 					}
 			Long intervalInMiliseconds = Long.valueOf(jtxtInterval.getText()) * 60 * 1000;
-			CoreObject.getConfig().setProperty(Constants.QUARTZ_REPEAT_INTERVAL, intervalInMiliseconds);
+			CoreObject.getConfig().setProperty(Constants.QUARTZ_REMINDER_REPEAT_INTERVAL, Math.abs(intervalInMiliseconds.longValue()));
 
 			BasecampPerson person = BasecampBusiness.getCurrentPerson();
 			CoreObject.getCurrentProfile().setBasecampAccountId(person.getId());
 
-			ReminderScheduler scheduler = new ReminderScheduler();
-			scheduler.startScheduler();
+			ReminderScheduler reminderScheduler = new ReminderScheduler();
+			reminderScheduler.startScheduler();
+
+			RefreshListsScheduler refreshScheduler = new RefreshListsScheduler();
+			refreshScheduler.startScheduler();
+
+			jbtnLogin.setEnabled(false);
 		} else {
 			String message = "Connection failed. \nYour username and password are correct?";
 			String title = "Connection failed";
