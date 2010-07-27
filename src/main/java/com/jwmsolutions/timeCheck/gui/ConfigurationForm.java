@@ -11,6 +11,8 @@ import com.jwmsolutions.timeCheck.business.BasecampBusiness;
 import com.jwmsolutions.timeCheck.business.ConfigurationBusiness;
 import com.jwmsolutions.timeCheck.model.BasecampPerson;
 import com.jwmsolutions.timeCheck.model.Profile;
+import com.jwmsolutions.timeCheck.util.Constants;
+import com.jwmsolutions.timeCheck.util.ReminderScheduler;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -18,8 +20,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.SoftBevelBorder;
@@ -125,6 +129,18 @@ public class ConfigurationForm extends javax.swing.JDialog {
 
 		jchkAutoLogin.setText("Automatic Sign-In");
 		jchkAutoLogin.setBorder(BorderFactory.createEtchedBorder(BevelBorder.LOWERED));
+		{
+			jlblInterval = new JLabel();
+			jlblInterval.setText("Reminder time interval");
+		}
+		{
+			jtxtInterval = new JTextField();
+			jtxtInterval.setText("60");
+		}
+		{
+			min = new JLabel();
+			min.setText("min");
+		}
 		jchkAutoLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				jchkAutoLoginActionPerformed(evt);
@@ -150,27 +166,37 @@ public class ConfigurationForm extends javax.swing.JDialog {
 				jPanel1);
 		jPanel1.setLayout(jPanel1Layout);
 		jPanel1Layout.setVerticalGroup(jPanel1Layout.createSequentialGroup()
-				.addContainerGap()
-				.add(jchkRemAccount, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-				.addPreferredGap(LayoutStyle.RELATED)
-				.add(jchkRemPassword, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-				.addPreferredGap(LayoutStyle.RELATED, 0, Short.MAX_VALUE)
-				.add(jchkAutoLogin, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
-				.addContainerGap());
+			.addContainerGap()
+			.add(jchkRemAccount, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+			.addPreferredGap(LayoutStyle.RELATED)
+			.add(jchkRemPassword, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+			.addPreferredGap(LayoutStyle.RELATED)
+			.add(jchkAutoLogin, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
+			.addPreferredGap(LayoutStyle.RELATED)
+			.add(jPanel1Layout.createParallelGroup(GroupLayout.BASELINE)
+			    .add(GroupLayout.BASELINE, jtxtInterval, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+			    .add(GroupLayout.BASELINE, jlblInterval, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+			    .add(GroupLayout.BASELINE, min, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+			.addContainerGap());
 		jPanel1Layout.setHorizontalGroup(jPanel1Layout.createSequentialGroup()
-				.add(6)
-				.add(jPanel1Layout.createParallelGroup()
-						.add(jPanel1Layout.createSequentialGroup()
-								.add(jchkRemPassword, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE)
-								.add(0, 0, Short.MAX_VALUE))
-								.add(GroupLayout.LEADING, jPanel1Layout.createSequentialGroup()
-										.add(jchkRemAccount, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE)
-										.add(0, 30, Short.MAX_VALUE))
-										.add(GroupLayout.LEADING, jPanel1Layout.createSequentialGroup()
-												.addPreferredGap(LayoutStyle.RELATED)
-												.add(jchkAutoLogin, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-												.add(0, 40, Short.MAX_VALUE)))
-												.addContainerGap(58, 58));
+			.addContainerGap()
+			.add(jPanel1Layout.createParallelGroup()
+			    .add(GroupLayout.LEADING, jPanel1Layout.createSequentialGroup()
+			        .add(0, 0, Short.MAX_VALUE)
+			        .add(jlblInterval, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE)
+			        .add(jtxtInterval, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE))
+			    .add(GroupLayout.LEADING, jPanel1Layout.createSequentialGroup()
+			        .add(jchkRemAccount, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE)
+			        .add(0, 6, Short.MAX_VALUE))
+			    .add(GroupLayout.LEADING, jPanel1Layout.createSequentialGroup()
+			        .add(jchkRemPassword, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE)
+			        .add(0, 6, Short.MAX_VALUE))
+			    .add(GroupLayout.LEADING, jPanel1Layout.createSequentialGroup()
+			        .add(jchkAutoLogin, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE)
+			        .add(0, 6, Short.MAX_VALUE)))
+			.addPreferredGap(LayoutStyle.RELATED)
+			.add(min, 0, 32, Short.MAX_VALUE)
+			.addContainerGap(14, 14));
 		jPanel1.setBorder(BorderFactory.createEtchedBorder(BevelBorder.LOWERED));
 		{
 			jbtnLogin = new javax.swing.JButton();
@@ -248,28 +274,28 @@ public class ConfigurationForm extends javax.swing.JDialog {
 											.addContainerGap());
 		}
 		jPanel2Layout.setVerticalGroup(jPanel2Layout.createSequentialGroup()
-				.add(jLabel4, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
-				.add(jPanel3, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
-				.add(jPanel1, 0, 87, Short.MAX_VALUE)
-				.addPreferredGap(LayoutStyle.UNRELATED, 1, GroupLayout.PREFERRED_SIZE)
-				.add(jbtnLogin, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-				.addContainerGap());
+			.add(jLabel4, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+			.add(jPanel3, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
+			.add(jPanel1, 0, 113, Short.MAX_VALUE)
+			.addPreferredGap(LayoutStyle.RELATED)
+			.add(jbtnLogin, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+			.addContainerGap());
 		jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup()
-				.add(GroupLayout.LEADING, jPanel2Layout.createParallelGroup()
-						.add(GroupLayout.LEADING, jPanel2Layout.createSequentialGroup()
-								.add(jLabel4, GroupLayout.PREFERRED_SIZE, 266, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(LayoutStyle.RELATED, 0, Short.MAX_VALUE))
-								.add(GroupLayout.LEADING, jPanel3, 0, 270, Short.MAX_VALUE))
-								.add(jPanel2Layout.createSequentialGroup()
-										.add(25)
-										.add(jPanel2Layout.createParallelGroup()
-												.add(GroupLayout.LEADING, jPanel2Layout.createSequentialGroup()
-														.add(jPanel1, 0, 219, Short.MAX_VALUE)
-														.add(16))
-														.add(GroupLayout.LEADING, jPanel2Layout.createSequentialGroup()
-																.add(0, 176, Short.MAX_VALUE)
-																.add(jbtnLogin, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)))
-																.addContainerGap()));
+			.add(GroupLayout.LEADING, jPanel2Layout.createParallelGroup()
+			    .add(GroupLayout.LEADING, jPanel2Layout.createSequentialGroup()
+			        .add(jLabel4, GroupLayout.PREFERRED_SIZE, 266, GroupLayout.PREFERRED_SIZE)
+			        .add(0, 6, Short.MAX_VALUE))
+			    .add(GroupLayout.LEADING, jPanel3, 0, 272, Short.MAX_VALUE))
+			.add(jPanel2Layout.createSequentialGroup()
+			    .add(25)
+			    .add(jPanel2Layout.createParallelGroup()
+			        .add(GroupLayout.LEADING, jPanel2Layout.createSequentialGroup()
+			            .add(jPanel1, 0, 221, Short.MAX_VALUE)
+			            .add(16))
+			        .add(GroupLayout.LEADING, jPanel2Layout.createSequentialGroup()
+			            .add(0, 178, Short.MAX_VALUE)
+			            .add(jbtnLogin, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)))
+			    .addContainerGap()));
 
 		this.setResizable(false);
 		this.setDefaultLookAndFeelDecorated(true);
@@ -277,7 +303,7 @@ public class ConfigurationForm extends javax.swing.JDialog {
 		bindingGroup.bind();
 
 		pack();
-		this.setSize(276, 273);
+		this.setSize(278, 294);
 	}// </editor-fold>
 	//GEN-END:initComponents
 
@@ -301,8 +327,14 @@ public class ConfigurationForm extends javax.swing.JDialog {
 					} else {
 						CoreObject.getTodoForm().setVisible(true);
 					}
+			Long intervalInMiliseconds = Long.valueOf(jtxtInterval.getText()) * 60 * 1000;
+			CoreObject.getConfig().setProperty(Constants.QUARTZ_REPEAT_INTERVAL, intervalInMiliseconds);
+
 			BasecampPerson person = BasecampBusiness.getCurrentPerson();
 			CoreObject.getCurrentProfile().setBasecampAccountId(person.getId());
+
+			ReminderScheduler scheduler = new ReminderScheduler();
+			scheduler.startScheduler();
 		} else {
 			String message = "Connection failed. \nYour username and password are correct?";
 			String title = "Connection failed";
@@ -379,6 +411,9 @@ public class ConfigurationForm extends javax.swing.JDialog {
 	//GEN-BEGIN:variables
 	// Variables declaration - do not modify
 	private javax.swing.JLabel jLabel4;
+	private JLabel min;
+	private JTextField jtxtInterval;
+	private JLabel jlblInterval;
 	private JPanel jPanel3;
 	private JPanel jpnlWindow;
 	private javax.swing.JPanel jPanel1;

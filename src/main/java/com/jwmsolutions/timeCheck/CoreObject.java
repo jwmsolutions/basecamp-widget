@@ -81,8 +81,6 @@ public class CoreObject {
 			if(workingTodoListId != null && !workingTodoListId.equals("-1"))
 				reloadTodoMap();
 		}
-		ReminderScheduler scheduler = new ReminderScheduler();
-		scheduler.startScheduler();
 	}
 
 	public static void reloadTodoMap() {
