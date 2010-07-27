@@ -2,6 +2,7 @@ target/
 .myeclipse
 .settings
 .classpath
+.directory
 .project
 *.swp
 *~
