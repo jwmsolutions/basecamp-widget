@@ -63,7 +63,7 @@ public class CoreObject {
 		loadResourcesProperties();
 
 		enableLog4jConfigFile();
-		DOMConfigurator.configure(FILE_LOG4J_CONFIG);
+		DOMConfigurator.configure(APPLICATION_CONFIG_DIR + FILE_LOG4J_CONFIG);
 		boolean successfulLoadConfiguration = loadConfiguration();
 
 		currentProfile = new Profile();
