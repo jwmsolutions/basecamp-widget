@@ -43,7 +43,7 @@ public class TrayIconManager {
 		//se verifica que el SystemTray sea soportado
 		if (SystemTray.isSupported()) {
 
-			//se obtiene una instancia est·tica de la clase SystemTray
+			//se obtiene una instancia est√°tica de la clase SystemTray
 			SystemTray tray = SystemTray.getSystemTray();
 
 			//esta es la imagen de icono
@@ -121,7 +121,7 @@ public class TrayIconManager {
 				}
 			});
 
-			//se debe capturar una excepciÛn en caso que falle la adicion de un icono
+			//se debe capturar una excepci√≥n en caso que falle la adicion de un icono
 			try {
 				tray.add(iconoSystemTray);
 			} catch (AWTException e) {
@@ -129,7 +129,7 @@ public class TrayIconManager {
 			}
 		}
 		else {
-			CoreObject.getLog().error("Tu sistema no soporta la caracterÌstica System Tray");
+			CoreObject.getLog().error("Tu sistema no soporta la caracter√≠stica System Tray");
 		}
 	}
 	public static void main(String[] args) {

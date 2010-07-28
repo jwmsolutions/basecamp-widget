@@ -22,7 +22,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * al nombre del elemento correspondiente en la respuesta XML, por ejemplo:
  * para el elemento
  * <account-holder-id ...>val</account-holder-id>
- * la propiedad ser· "accountHolderId"
+ * la propiedad ser√° "accountHolderId"
  */
 public class BasecampAccount extends BaseObject {
 	private Integer id;
