@@ -536,8 +536,8 @@ public class BasecampBusiness {
 			try {
 				getMethod = clazz.getMethod(getMethodName);
 				if(fieldType.getSuperclass().getSimpleName().equals("BaseObject")) {
-					// TODO hacer el cÛdigo para que soporte m·s objetos
-					//que formen parte de las propiedades el objeto que se est· recorriendo
+					// TODO hacer el c√≥digo para que soporte m√°s objetos
+					//que formen parte de las propiedades el objeto que se est√° recorriendo
 				} else {
 					Object value = fieldType.cast(getMethod.invoke(object));
 					Element item = doc.createElement(convertStringToTagName(fieldName));

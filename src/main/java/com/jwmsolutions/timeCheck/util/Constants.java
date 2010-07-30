@@ -29,7 +29,7 @@ public class Constants {
 	public final static String METHOD_DELETE = "DELETE";
 
 	/*
-	 * Constantes para administrar los datos de perfil y configuraci�n
+	 * Constantes para administrar los datos de perfil y configuración
 	 */
 	public final static String CONFIG_USERNAME = "username";
 	public final static String CONFIG_PASSWORD = "password";

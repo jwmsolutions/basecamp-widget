@@ -40,8 +40,8 @@ import com.jwmsolutions.timeCheck.util.ReminderScheduler;
 
 /**
  * @author <a href="mailto:jorge.ruiz@jwmsolutions.com">Jorge Ruiz Aquino</a>
- * Clase base que contendr· imports y funcionalidades
- * generales que aplicar·n a todas las dem·s clases
+ * Clase base que contendr√° imports y funcionalidades
+ * generales que aplicar√°n a todas las dem√°s clases
  */
 public class CoreObject {
 	private static final org.apache.log4j.Logger log = LogFilter.getLoggerInstance();
