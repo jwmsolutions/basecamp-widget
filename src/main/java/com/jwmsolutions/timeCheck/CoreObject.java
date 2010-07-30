@@ -26,7 +26,6 @@ import org.apache.log4j.xml.DOMConfigurator;
 import com.jwmsolutions.timeCheck.business.BasecampBusiness;
 import com.jwmsolutions.timeCheck.business.ConfigurationBusiness;
 import com.jwmsolutions.timeCheck.gui.ConfigurationForm;
-import com.jwmsolutions.timeCheck.gui.ProjectSelectorForm;
 import com.jwmsolutions.timeCheck.gui.TodoForm;
 import com.jwmsolutions.timeCheck.model.BasecampProject;
 import com.jwmsolutions.timeCheck.model.BasecampProjects;
@@ -51,7 +50,6 @@ public class CoreObject {
 	private static Profile currentProfile;
 	private static ConfigurationForm configForm;
 	private static TodoForm todoForm;
-	private static ProjectSelectorForm projectSelectorForm;
 	private static Map<String, BasecampTodoItem> todoMap = new LinkedMap();
 	private static Map<String, Integer> projectMap = new LinkedMap();
 	private static Map<String, Integer> todoListMap = new LinkedMap();
@@ -68,18 +66,19 @@ public class CoreObject {
 
 		currentProfile = new Profile();
 		ConfigurationBusiness.loadStoredProfile();
-		projectSelectorForm = new ProjectSelectorForm();
 		todoForm = new TodoForm(null, false);
 		configForm = new ConfigurationForm(null, false);
 
 		if(successfulLoadConfiguration && testConnection()) {
 			ConfigurationBusiness.loadWorkingProjectId();
 			ConfigurationBusiness.loadWorkingTodoListId();
-			loadProjectMap();
-			if(workingProjectId != null && !workingProjectId.equals("-1"))
+			loadProjectMap(workingProjectId);
+			if(workingProjectId != null && !workingProjectId.equals("-1")) {
 				loadTodoListMap();
-			if(workingTodoListId != null && !workingTodoListId.equals("-1"))
+			}
+			if(workingTodoListId != null && !workingTodoListId.equals("-1")) {
 				reloadTodoMap();
+			}
 		}
 	}
 
@@ -128,9 +127,6 @@ public class CoreObject {
 	public static ConfigurationForm getConfigForm() {
 		return configForm;
 	}
-	public static ProjectSelectorForm getProjectSelectorForm() {
-		return projectSelectorForm;
-	}
 
 	public static TodoForm getTodoForm() {
 		return todoForm;
@@ -145,14 +141,24 @@ public class CoreObject {
 	public static void setProjectMap(Map<String, Integer> projectMap) {
 		CoreObject.projectMap = projectMap;
 	}
-	public static void loadProjectMap() {
+	public static void loadProjectMap(String projectIdToSelect) {
+		String itemToSelect = null;
 		projectMap.clear();
-		getProjectSelectorForm().clearProjectsCombo();
+		getTodoForm().clearProjectsCombo();
 		BasecampProjects bcProjects = BasecampBusiness.getProjects();
 		for(BasecampProject p : bcProjects.getProject()) {
 			projectMap.put(p.getName(), p.getId());
-			getProjectSelectorForm().addProjectToCombo(p.getName());
+			getTodoForm().addProjectToCombo(p.getName());
+			if(projectIdToSelect != null && p.getId().toString().equals(projectIdToSelect.trim())) {
+				itemToSelect = p.getName();
+			}
 		}
+		if(projectIdToSelect == null && bcProjects.getProject().size() > 0) {
+			getTodoForm().getProjectComboBox().setSelectedIndex(0);
+		} else  if(projectIdToSelect != null && !projectIdToSelect.equals("-1")) {
+			getTodoForm().getProjectComboBox().setSelectedItem(itemToSelect);
+		}
+		loadTodoListMap();
 	}
 
 	public static Map<String, Integer> getTodoListMap() {
@@ -161,6 +167,7 @@ public class CoreObject {
 	public static void setTodoListMap(Map<String, Integer> todoListMap) {
 		CoreObject.todoListMap = todoListMap;
 	}
+
 	public static void loadTodoListMap() {
 		todoListMap.clear();
 		getTodoForm().clearTodoListsCombo();

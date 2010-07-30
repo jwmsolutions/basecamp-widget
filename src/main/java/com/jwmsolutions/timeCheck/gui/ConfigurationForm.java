@@ -320,14 +320,10 @@ public class ConfigurationForm extends javax.swing.JDialog {
 		//		ConfigurationBusiness.loadStoredProfile();
 
 		if(CoreObject.testConnection()) {
-			CoreObject.loadProjectMap();
+			CoreObject.loadProjectMap(null);
 			this.setVisible(false);
-			if(CoreObject.getWorkingProjectId() == null || CoreObject.getWorkingProjectId().equals("-1") ||
-					CoreObject.getWorkingTodoListId() == null || CoreObject.getWorkingTodoListId().equals("-1")) {
-						CoreObject.getProjectSelectorForm().setVisible(true);
-					} else {
-						CoreObject.getTodoForm().setVisible(true);
-					}
+			CoreObject.getTodoForm().setVisible(true);
+
 			Long interval = Long.valueOf(jtxtInterval.getText());
 			long intervalInMiliseconds = Math.abs(interval.longValue()) * 60 * 1000;
 			CoreObject.getConfig().setProperty(Constants.QUARTZ_REMINDER_REPEAT_INTERVAL, intervalInMiliseconds);

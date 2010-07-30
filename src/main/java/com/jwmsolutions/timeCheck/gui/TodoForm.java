@@ -50,6 +50,7 @@ import sun.security.krb5.Config;
 
 import com.jwmsolutions.timeCheck.CoreObject;
 import com.jwmsolutions.timeCheck.business.BasecampBusiness;
+import com.jwmsolutions.timeCheck.business.ConfigurationBusiness;
 import com.jwmsolutions.timeCheck.model.BasecampTimeEntry;
 import com.jwmsolutions.timeCheck.model.BasecampTodoItem;
 import com.jwmsolutions.timeCheck.util.Constants;
@@ -116,15 +117,14 @@ public class TodoForm extends javax.swing.JDialog {
 		GroupLayout layout = new GroupLayout((JComponent)getContentPane());
 		getContentPane().setLayout(layout);
 		layout.setVerticalGroup(layout.createSequentialGroup()
-				.add(getJpnlTime(), 0, 250, Short.MAX_VALUE)
-				.addContainerGap());
+			.add(getJpnlTime(), 0, 353, Short.MAX_VALUE));
 		layout.setHorizontalGroup(layout.createSequentialGroup()
-				.add(getJpnlTime(), 0, 337, Short.MAX_VALUE));
+			.add(getJpnlTime(), 0, 352, Short.MAX_VALUE));
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
 		pack();
-		this.setSize(360, 352);
+		this.setSize(360, 357);
 	}// </editor-fold>
 	//GEN-END:initComponents
 
@@ -173,24 +173,27 @@ public class TodoForm extends javax.swing.JDialog {
 			GroupLayout jpnlTimeLayout = new GroupLayout((JComponent)jpnlTime);
 			jpnlTime.setLayout(jpnlTimeLayout);
 			jpnlTimeLayout.setHorizontalGroup(jpnlTimeLayout.createParallelGroup()
-				.add(GroupLayout.LEADING, getJPanel6(), 0, 332, Short.MAX_VALUE)
+				.add(GroupLayout.LEADING, getJPanel6(), 0, 352, Short.MAX_VALUE)
 				.add(jpnlTimeLayout.createSequentialGroup()
 				    .addPreferredGap(getJPanel6(), getJPanel5(), LayoutStyle.INDENT)
 				    .add(jpnlTimeLayout.createParallelGroup()
-				        .add(GroupLayout.LEADING, getJPanel5(), 0, 312, Short.MAX_VALUE)
-				        .add(GroupLayout.LEADING, getJPanel4(), 0, 312, Short.MAX_VALUE)
-				        .add(GroupLayout.LEADING, getJPanel3(), 0, 312, Short.MAX_VALUE)
-				        .add(GroupLayout.LEADING, getJPanel2(), 0, 312, Short.MAX_VALUE))
+				        .add(GroupLayout.LEADING, getJPanel5(), 0, 332, Short.MAX_VALUE)
+				        .add(GroupLayout.LEADING, getJPanel4(), 0, 332, Short.MAX_VALUE)
+				        .add(GroupLayout.LEADING, getJPanel3(), 0, 332, Short.MAX_VALUE)
+				        .add(GroupLayout.LEADING, getJPanel2(), 0, 332, Short.MAX_VALUE)
+				        .add(GroupLayout.LEADING, getJPanel7(), 0, 332, Short.MAX_VALUE))
 				    .addContainerGap()));
 			jpnlTimeLayout.setVerticalGroup(jpnlTimeLayout.createSequentialGroup()
-				.add(getJPanel6(), 0, 24, Short.MAX_VALUE)
-				.add(40)
-				.add(getJPanel5(), GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
-				.add(getJPanel4(), GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-				.add(19)
+				.add(getJPanel6(), GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
+				.addPreferredGap(LayoutStyle.RELATED)
+				.add(getJPanel7(), GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
+				.add(getJPanel5(), GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
+				.add(getJPanel4(), GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+				.addPreferredGap(LayoutStyle.UNRELATED)
 				.add(getJPanel3(), GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
 				.addPreferredGap(LayoutStyle.RELATED)
-				.add(getJPanel2(), GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE));
+				.add(getJPanel2(), GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
+				.addContainerGap(30, Short.MAX_VALUE));
 		}
 		return jpnlTime;
 	}
@@ -263,11 +266,14 @@ public class TodoForm extends javax.swing.JDialog {
 	private javax.swing.JLabel jlblCurrentTime;
 	private javax.swing.JLabel jLabel2;
 	private javax.swing.JLabel jLabel3;
+	private JPanel jPanel7;
 	private JLabel jlblLink;
 	private JPanel jPanel6;
 	private JLabel jlblDescription;
 	private JLabel jlblTodoList;
 	private JButton jbtnRefresh;
+	private JLabel jlblProject;
+	private JComboBox jcbProjects;
 	private JLabel lblMessages;
 	private JComboBox jcbLists;
 	private JLabel lblLists;
@@ -434,7 +440,6 @@ public class TodoForm extends javax.swing.JDialog {
 			jPanel5.setLayout(jPanel5Layout);
 			jPanel5.add(getLblLists(), "0, 0, 1, 0, l, b");
 			jPanel5.add(getJcbLists(), "0,1,5,1,f,b");
-			jPanel5.add(getJbtnRefresh(), "4,0,5,0,f,b");
 		}
 		return jPanel5;
 	}
@@ -502,9 +507,11 @@ public class TodoForm extends javax.swing.JDialog {
 	}
 
 	public void refreshCombos() {
+		String currentSelectedProject = (String)jcbProjects.getSelectedItem();
 		String currentSelectedList = (String)jcbLists.getSelectedItem();
 		String currentSelectedItem = (String)jcbTodos.getSelectedItem();
-		CoreObject.loadTodoListMap();
+		CoreObject.loadProjectMap(currentSelectedProject);
+		jcbProjects.setSelectedItem(currentSelectedProject);
 		jcbLists.setSelectedItem(currentSelectedList);
 		jcbTodos.setSelectedItem(currentSelectedItem);
 	}
@@ -583,5 +590,69 @@ public class TodoForm extends javax.swing.JDialog {
 
 	private void jlblLinkMouseExited(MouseEvent evt) {
 		jlblLink.setText("User Feedback");
+	}
+
+	private JPanel getJPanel7() {
+		if(jPanel7 == null) {
+			jPanel7 = new JPanel();
+			TableLayout jPanel7Layout = new TableLayout(new double[][] {{TableLayout.FILL, TableLayout.FILL, TableLayout.FILL, TableLayout.FILL, TableLayout.FILL, TableLayout.FILL}, {TableLayout.FILL, TableLayout.FILL}});
+			jPanel7Layout.setHGap(5);
+			jPanel7Layout.setVGap(5);
+			jPanel7.setLayout(jPanel7Layout);
+			jPanel7.add(getJbtnRefresh(), "4,0,5,0,f,t");
+			jPanel7.add(getJcbProjects(), "0, 1, 5, 1");
+			jPanel7.add(getJlblProject(), "0,0,f,b");
+		}
+		return jPanel7;
+	}
+
+	private JComboBox getJcbProjects() {
+		if(jcbProjects == null) {
+			ComboBoxModel jcbProjectsModel =
+				new DefaultComboBoxModel(
+						new String[] { "Item One", "Item Two" });
+			jcbProjectsModel.setSelectedItem("");
+			jcbProjects = new JComboBox();
+			jcbProjects.setModel(jcbProjectsModel);
+			jcbProjects.setBorder(BorderFactory.createEtchedBorder(BevelBorder.LOWERED));
+			jcbProjects.addItemListener(new ItemListener() {
+				public void itemStateChanged(ItemEvent evt) {
+					jcbProjectsItemStateChanged(evt);
+				}
+			});
+		}
+		return jcbProjects;
+	}
+
+	private JLabel getJlblProject() {
+		if(jlblProject == null) {
+			jlblProject = new JLabel();
+			jlblProject.setText("Project");
+		}
+		return jlblProject;
+	}
+
+	public void clearProjectsCombo() {
+		this.jcbProjects.removeAllItems();
+	}
+
+	public void addProjectToCombo(String key) {
+		jcbProjects.addItem(key);
+	}
+
+	private void jcbProjectsItemStateChanged(ItemEvent evt) {
+		String projectSelected = (String)jcbProjects.getSelectedItem();
+		if(projectSelected != null) {
+			Integer projectId = CoreObject.getProjectMap().get(projectSelected);
+			CoreObject.setWorkingProjectId(projectId.toString());
+			if(CoreObject.getCurrentProfile().isAutoLogin()) {
+				ConfigurationBusiness.saveWorkingProjectId(projectId);
+			}
+			CoreObject.loadTodoListMap();
+		}
+	}
+
+	public JComboBox getProjectComboBox() {
+		return jcbProjects;
 	}
 }

@@ -27,16 +27,12 @@ public class TrayIconManager {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (InstantiationException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (IllegalAccessException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (UnsupportedLookAndFeelException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -66,18 +62,7 @@ public class TrayIconManager {
 			menuItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					CoreObject.getTodoForm().dispose();
-					CoreObject.getProjectSelectorForm().dispose();
 					CoreObject.getConfigForm().setVisible(true);
-				}
-			});
-			popup.add(menuItem);
-
-			menuItem = new JMenuItem("Project selector form",  new ImageIcon(TrayIconManager.class.getResource("images/settings16px.png")));
-			menuItem.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					CoreObject.getTodoForm().dispose();
-					CoreObject.getConfigForm().dispose();
-					CoreObject.getProjectSelectorForm().setVisible(true);
 				}
 			});
 			popup.add(menuItem);
@@ -85,7 +70,6 @@ public class TrayIconManager {
 			menuItem = new JMenuItem("To-do form",  new ImageIcon(TrayIconManager.class.getResource("images/todo16px.png")));
 			menuItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					CoreObject.getProjectSelectorForm().dispose();
 					CoreObject.getConfigForm().dispose();
 					CoreObject.getTodoForm().setVisible(true);
 				}
@@ -97,7 +81,6 @@ public class TrayIconManager {
 			JMenuItem item = new JMenuItem("Quit", new ImageIcon(TrayIconManager.class.getResource("images/quit16px.png")));
 			item.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					// TODO imprimir System.out.println("Saliendo...");
 					System.exit(0);
 				}
 			});
