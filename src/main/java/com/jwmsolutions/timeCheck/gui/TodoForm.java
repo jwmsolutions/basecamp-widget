@@ -8,6 +8,8 @@ package com.jwmsolutions.timeCheck.gui;
 
 import info.clearthought.layout.TableLayout;
 
+import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
@@ -15,6 +17,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -37,11 +46,14 @@ import org.apache.commons.lang.StringUtils;
 import org.jdesktop.layout.GroupLayout;
 import org.jdesktop.layout.LayoutStyle;
 
+import sun.security.krb5.Config;
+
 import com.jwmsolutions.timeCheck.CoreObject;
 import com.jwmsolutions.timeCheck.business.BasecampBusiness;
 import com.jwmsolutions.timeCheck.model.BasecampTimeEntry;
 import com.jwmsolutions.timeCheck.model.BasecampTodoItem;
 import com.jwmsolutions.timeCheck.util.Constants;
+import com.jwmsolutions.timeCheck.util.JLinkButton;
 import com.toedter.calendar.JDateChooser;
 
 /**
@@ -113,7 +125,7 @@ public class TodoForm extends javax.swing.JDialog {
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
 		pack();
-		this.setSize(340, 288);
+		this.setSize(360, 352);
 	}// </editor-fold>
 	//GEN-END:initComponents
 
@@ -161,21 +173,25 @@ public class TodoForm extends javax.swing.JDialog {
 			jpnlTime = new JPanel();
 			GroupLayout jpnlTimeLayout = new GroupLayout((JComponent)jpnlTime);
 			jpnlTime.setLayout(jpnlTimeLayout);
-			jpnlTimeLayout.setHorizontalGroup(jpnlTimeLayout.createSequentialGroup()
-					.addContainerGap()
-					.add(jpnlTimeLayout.createParallelGroup()
-							.add(GroupLayout.LEADING, getJPanel5(), 0, 312, Short.MAX_VALUE)
-							.add(GroupLayout.LEADING, getJPanel4(), 0, 312, Short.MAX_VALUE)
-							.add(GroupLayout.LEADING, getJPanel3(), 0, 312, Short.MAX_VALUE)
-							.add(GroupLayout.LEADING, getJPanel2(), 0, 312, Short.MAX_VALUE))
-							.addContainerGap());
+			jpnlTimeLayout.setHorizontalGroup(jpnlTimeLayout.createParallelGroup()
+				.add(GroupLayout.LEADING, getJPanel6(), 0, 332, Short.MAX_VALUE)
+				.add(jpnlTimeLayout.createSequentialGroup()
+				    .addPreferredGap(getJPanel6(), getJPanel5(), LayoutStyle.INDENT)
+				    .add(jpnlTimeLayout.createParallelGroup()
+				        .add(GroupLayout.LEADING, getJPanel5(), 0, 312, Short.MAX_VALUE)
+				        .add(GroupLayout.LEADING, getJPanel4(), 0, 312, Short.MAX_VALUE)
+				        .add(GroupLayout.LEADING, getJPanel3(), 0, 312, Short.MAX_VALUE)
+				        .add(GroupLayout.LEADING, getJPanel2(), 0, 312, Short.MAX_VALUE))
+				    .addContainerGap()));
 			jpnlTimeLayout.setVerticalGroup(jpnlTimeLayout.createSequentialGroup()
-					.add(getJPanel5(), GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
-					.add(getJPanel4(), 0, 46, Short.MAX_VALUE)
-					.add(19)
-					.add(getJPanel3(), GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(LayoutStyle.RELATED)
-					.add(getJPanel2(), GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE));
+				.add(getJPanel6(), 0, 24, Short.MAX_VALUE)
+				.add(40)
+				.add(getJPanel5(), GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
+				.add(getJPanel4(), GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+				.add(19)
+				.add(getJPanel3(), GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
+				.addPreferredGap(LayoutStyle.RELATED)
+				.add(getJPanel2(), GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE));
 		}
 		return jpnlTime;
 	}
@@ -248,6 +264,8 @@ public class TodoForm extends javax.swing.JDialog {
 	private javax.swing.JLabel jlblCurrentTime;
 	private javax.swing.JLabel jLabel2;
 	private javax.swing.JLabel jLabel3;
+	private JLabel jlblLink;
+	private JPanel jPanel6;
 	private JLabel jlblDescription;
 	private JLabel jlblTodoList;
 	private JButton jbtnRefresh;
@@ -517,5 +535,54 @@ public class TodoForm extends javax.swing.JDialog {
 			CoreObject.setWorkingTodoListId(todoListId.toString());
 			CoreObject.reloadTodoMap();
 		}
+	}
+
+	private JPanel getJPanel6() {
+		if(jPanel6 == null) {
+			jPanel6 = new JPanel();
+			FlowLayout jPanel6Layout = new FlowLayout();
+			jPanel6Layout.setAlignment(FlowLayout.RIGHT);
+			jPanel6.setLayout(jPanel6Layout);
+			jPanel6.add(getJlblLink());
+		}
+		return jPanel6;
+	}
+
+	private JLabel getJlblLink() {
+		if(jlblLink == null) {
+			jlblLink = new JLabel();
+			jlblLink.setText("User Feedback");
+			jlblLink.setForeground(Color.blue);
+			jlblLink.addMouseListener(new MouseAdapter() {
+				public void mouseExited(MouseEvent evt) {
+					jlblLinkMouseExited(evt);
+				}
+				public void mouseEntered(MouseEvent evt) {
+					jlblLinkMouseEntered(evt);
+				}
+				public void mouseClicked(MouseEvent evt) {
+					jlblLinkMouseClicked(evt);
+				}
+			});
+		}
+		return jlblLink;
+	}
+
+	private void jlblLinkMouseClicked(MouseEvent evt) {
+		try {
+			Desktop.getDesktop().browse(new URI(CoreObject.getGlobalProperties().getProperty(Constants.APP_URL_GITHUB)));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} catch (URISyntaxException e1) {
+			e1.printStackTrace();
+		}
+	}
+
+	private void jlblLinkMouseEntered(MouseEvent evt) {
+		jlblLink.setText("<html><u>User Feedback</u></html>");
+	}
+
+	private void jlblLinkMouseExited(MouseEvent evt) {
+		jlblLink.setText("User Feedback");
 	}
 }

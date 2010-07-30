@@ -7,6 +7,8 @@ package com.jwmsolutions.timeCheck.util;
  * @author <a href="mailto:jorge.ruiz@jwmsolutions.com">Jorge Ruiz Aquino</a>
  */
 public class Constants {
+	public final static String APP_URL_GITHUB = "app.url.github";
+
 	public final static String LOG_GLOBAL_NAME = "com.jwmsolutions.logs.Global";
 	public final static String DATE_FORMAT_DATETIME = "basecamp.api.dateformat.datetime";
 	public final static String DATE_FORMAT_DATELONG = "basecamp.api.dateformat.datelong";
@@ -27,7 +29,7 @@ public class Constants {
 	public final static String METHOD_DELETE = "DELETE";
 
 	/*
-	 * Constantes para administrar los datos de perfil y configuración
+	 * Constantes para administrar los datos de perfil y configuraciï¿½n
 	 */
 	public final static String CONFIG_USERNAME = "username";
 	public final static String CONFIG_PASSWORD = "password";

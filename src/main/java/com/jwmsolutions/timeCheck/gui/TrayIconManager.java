@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
@@ -17,6 +18,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import com.jwmsolutions.timeCheck.CoreObject;
+import com.jwmsolutions.timeCheck.util.JLinkButton;
 
 /**
  * @author <a href="mailto:jorge.ruiz@jwmsolutions.com">Jorge Ruiz Aquino</a>
@@ -43,7 +45,7 @@ public class TrayIconManager {
 		//se verifica que el SystemTray sea soportado
 		if (SystemTray.isSupported()) {
 
-			//se obtiene una instancia estática de la clase SystemTray
+			//se obtiene una instancia estï¿½tica de la clase SystemTray
 			SystemTray tray = SystemTray.getSystemTray();
 
 			//esta es la imagen de icono
@@ -121,7 +123,7 @@ public class TrayIconManager {
 				}
 			});
 
-			//se debe capturar una excepción en caso que falle la adicion de un icono
+			//se debe capturar una excepciï¿½n en caso que falle la adicion de un icono
 			try {
 				tray.add(iconoSystemTray);
 			} catch (AWTException e) {
@@ -129,7 +131,7 @@ public class TrayIconManager {
 			}
 		}
 		else {
-			CoreObject.getLog().error("Tu sistema no soporta la característica System Tray");
+			CoreObject.getLog().error("Tu sistema no soporta la caracterï¿½stica System Tray");
 		}
 	}
 	public static void main(String[] args) {
