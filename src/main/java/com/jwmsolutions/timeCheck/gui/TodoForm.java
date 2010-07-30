@@ -117,9 +117,9 @@ public class TodoForm extends javax.swing.JDialog {
 		GroupLayout layout = new GroupLayout((JComponent)getContentPane());
 		getContentPane().setLayout(layout);
 		layout.setVerticalGroup(layout.createSequentialGroup()
-			.add(getJpnlTime(), 0, 353, Short.MAX_VALUE));
+				.add(getJpnlTime(), 0, 353, Short.MAX_VALUE));
 		layout.setHorizontalGroup(layout.createSequentialGroup()
-			.add(getJpnlTime(), 0, 352, Short.MAX_VALUE));
+				.add(getJpnlTime(), 0, 352, Short.MAX_VALUE));
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -129,6 +129,11 @@ public class TodoForm extends javax.swing.JDialog {
 	//GEN-END:initComponents
 
 	private void jbtnReportActionPerformed(java.awt.event.ActionEvent evt) {
+		if(!isValidHours()) {
+			lblMessages.setText("Not a valid time!");
+			return;
+		}
+
 		Integer id = null;
 		Integer projectId = Integer.valueOf(CoreObject.getWorkingProjectId());
 		Calendar cal = jDateChooser_IL.getCalendar();
@@ -155,6 +160,15 @@ public class TodoForm extends javax.swing.JDialog {
 		}
 	}
 
+	private boolean isValidHours() {
+		String hours = jtfHours.getText().trim();
+		if(StringUtils.isNotBlank(hours) && StringUtils.isNumeric(hours)) {
+			double h = Double.valueOf(hours);
+			return h>0;
+		}
+		return false;
+	}
+
 	private JPanel getJpnlDateChooser() {
 		if(jpnlDateChooser == null) {
 			jpnlDateChooser = new JPanel();
@@ -173,27 +187,27 @@ public class TodoForm extends javax.swing.JDialog {
 			GroupLayout jpnlTimeLayout = new GroupLayout((JComponent)jpnlTime);
 			jpnlTime.setLayout(jpnlTimeLayout);
 			jpnlTimeLayout.setHorizontalGroup(jpnlTimeLayout.createParallelGroup()
-				.add(GroupLayout.LEADING, getJPanel6(), 0, 352, Short.MAX_VALUE)
-				.add(jpnlTimeLayout.createSequentialGroup()
-				    .addPreferredGap(getJPanel6(), getJPanel5(), LayoutStyle.INDENT)
-				    .add(jpnlTimeLayout.createParallelGroup()
-				        .add(GroupLayout.LEADING, getJPanel5(), 0, 332, Short.MAX_VALUE)
-				        .add(GroupLayout.LEADING, getJPanel4(), 0, 332, Short.MAX_VALUE)
-				        .add(GroupLayout.LEADING, getJPanel3(), 0, 332, Short.MAX_VALUE)
-				        .add(GroupLayout.LEADING, getJPanel2(), 0, 332, Short.MAX_VALUE)
-				        .add(GroupLayout.LEADING, getJPanel7(), 0, 332, Short.MAX_VALUE))
-				    .addContainerGap()));
+					.add(GroupLayout.LEADING, getJPanel6(), 0, 352, Short.MAX_VALUE)
+					.add(jpnlTimeLayout.createSequentialGroup()
+							.addPreferredGap(getJPanel6(), getJPanel5(), LayoutStyle.INDENT)
+							.add(jpnlTimeLayout.createParallelGroup()
+									.add(GroupLayout.LEADING, getJPanel5(), 0, 332, Short.MAX_VALUE)
+									.add(GroupLayout.LEADING, getJPanel4(), 0, 332, Short.MAX_VALUE)
+									.add(GroupLayout.LEADING, getJPanel3(), 0, 332, Short.MAX_VALUE)
+									.add(GroupLayout.LEADING, getJPanel2(), 0, 332, Short.MAX_VALUE)
+									.add(GroupLayout.LEADING, getJPanel7(), 0, 332, Short.MAX_VALUE))
+									.addContainerGap()));
 			jpnlTimeLayout.setVerticalGroup(jpnlTimeLayout.createSequentialGroup()
-				.add(getJPanel6(), GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-				.addPreferredGap(LayoutStyle.RELATED)
-				.add(getJPanel7(), GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
-				.add(getJPanel5(), GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
-				.add(getJPanel4(), GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
-				.addPreferredGap(LayoutStyle.UNRELATED)
-				.add(getJPanel3(), GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
-				.addPreferredGap(LayoutStyle.RELATED)
-				.add(getJPanel2(), GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-				.addContainerGap(30, Short.MAX_VALUE));
+					.add(getJPanel6(), GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(getJPanel7(), GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
+					.add(getJPanel5(), GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
+					.add(getJPanel4(), GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.UNRELATED)
+					.add(getJPanel3(), GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(getJPanel2(), GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(30, Short.MAX_VALUE));
 		}
 		return jpnlTime;
 	}
