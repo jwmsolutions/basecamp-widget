@@ -53,7 +53,6 @@ import com.jwmsolutions.timeCheck.business.BasecampBusiness;
 import com.jwmsolutions.timeCheck.model.BasecampTimeEntry;
 import com.jwmsolutions.timeCheck.model.BasecampTodoItem;
 import com.jwmsolutions.timeCheck.util.Constants;
-import com.jwmsolutions.timeCheck.util.JLinkButton;
 import com.toedter.calendar.JDateChooser;
 
 /**

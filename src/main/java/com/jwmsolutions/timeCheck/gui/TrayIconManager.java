@@ -18,7 +18,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import com.jwmsolutions.timeCheck.CoreObject;
-import com.jwmsolutions.timeCheck.util.JLinkButton;
 
 /**
  * @author <a href="mailto:jorge.ruiz@jwmsolutions.com">Jorge Ruiz Aquino</a>
